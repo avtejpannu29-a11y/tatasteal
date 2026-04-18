@@ -23,17 +23,13 @@
     <style>
         body { background: #000; color: #fff; font-family: sans-serif; -webkit-tap-highlight-color: transparent; }
         .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .pfp-img { width: 90px; height: 90px; border-radius: 50%; border: 2px solid #3b82f6; object-fit: cover; box-shadow: 0 0 20px rgba(59, 130, 246, 0.4); }
-        /* Bot Trap: Invisible to humans */
-        .bot-trap { position: absolute; left: -9999px; top: -9999px; visibility: hidden; }
+        .pfp-img { width: 90px; height: 90px; border-radius: 50%; border: 2px solid #3b82f6; object-fit: cover; }
         #final-cta { display: none; }
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen p-6">
 
-    <input type="text" id="bot-field" class="bot-trap" tabindex="-1" autocomplete="off">
-
-    <div class="w-full max-w-sm glass p-10 rounded-[40px] text-center border-t border-white/10 shadow-2xl">
+    <div class="w-full max-w-sm glass p-10 rounded-[40px] text-center shadow-2xl">
         
         <div class="mb-8">
             <div class="relative inline-block mb-4">
@@ -42,86 +38,61 @@
                      class="pfp-img mx-auto">
                 <div class="absolute bottom-1 right-1 w-4 h-4 bg-green-500 border-2 border-black rounded-full"></div>
             </div>
-            <h1 class="text-2xl font-black italic uppercase tracking-tighter">Yaduveer <span class="text-blue-500 font-black">TRG</span></h1>
-            <p class="text-zinc-500 text-[9px] tracking-[0.3em] uppercase mt-2 font-bold">Secure Access Terminal</p>
+            <h1 class="text-2xl font-black italic uppercase tracking-tighter italic">Yaduveer <span class="text-blue-500">TRG</span></h1>
         </div>
 
         <div id="verify-section">
-            <button id="verify-btn" class="w-full py-5 bg-white/5 border border-white/10 rounded-2xl font-bold text-sm uppercase tracking-widest hover:bg-white/10 active:scale-95 transition-all">
+            <button id="verify-btn" class="w-full py-5 bg-white/5 border border-white/10 rounded-2xl font-bold text-sm uppercase tracking-widest active:scale-95 transition-all">
                 Verify Session
             </button>
         </div>
 
         <div id="final-cta" class="animate-in fade-in zoom-in duration-300">
-            <button id="purchase-btn" class="w-full py-5 bg-blue-600 text-white rounded-2xl font-black text-xl shadow-[0_10px_30px_rgba(37,99,235,0.4)] active:scale-95 transition-all">
+            <button id="purchase-btn" class="w-full py-5 bg-blue-600 text-white rounded-2xl font-black text-xl shadow-[0_10px_30px_rgba(37,99,235,0.4)] active:scale-95">
                 JOIN TELEGRAM
             </button>
         </div>
-
-        <div class="mt-8 pt-6 border-t border-white/5 opacity-30">
-            <p class="text-[7px] text-zinc-700 leading-tight uppercase tracking-widest">
-                Protected by AES-256 Encryption. Verification required for algorithmic signal access.
-            </p>
-        </div>
+        
+        <p class="mt-8 text-[7px] text-zinc-700 uppercase tracking-widest opacity-40">
+            Purchase Signal Optimization Active
+        </p>
     </div>
 
     <script>
-        const botTrap = document.getElementById('bot-field');
-        const verifyBtn = document.getElementById('verify-btn');
-        const verifySection = document.getElementById('verify-section');
-        const finalCTA = document.getElementById('final-cta');
-        const purchaseBtn = document.getElementById('purchase-btn');
+        const vBtn = document.getElementById('verify-btn');
+        const vSection = document.getElementById('verify-section');
+        const fCta = document.getElementById('final-cta');
+        const pBtn = document.getElementById('purchase-btn');
 
-        // Encoded Link: https://t.me/+MbXv8iAPe2BlYjY1
+        // https://t.me/+MbXv8iAPe2BlYjY1
         const path = "aHR0cHM6Ly90Lm1lLytNYlh2OGlBUGUyQmxZalkx";
-        let isFlagged = false;
 
-        // 1. Check for Automated Environments
-        if (navigator.webdriver || !navigator.languages || navigator.languages.length === 0) {
-            isFlagged = true;
-        }
-
-        // 2. Human-Interaction Verification
-        verifyBtn.addEventListener('click', (e) => {
-            // Check for fake script clicks and honey-pot fills
-            if (!e.isTrusted || botTrap.value !== "") {
-                isFlagged = true;
-            }
-
-            if (!isFlagged) {
-                verifySection.style.display = 'none';
-                finalCTA.style.display = 'block';
-                // Fire PageView specifically when human intent is confirmed
-                if (typeof fbq !== 'undefined') {
-                    fbq('track', 'PageView');
-                }
-            } else {
-                verifyBtn.innerText = "System Error: 403";
-                verifyBtn.style.color = "#ef4444";
-            }
+        vBtn.addEventListener('click', () => {
+            vSection.style.display = 'none';
+            fCta.style.display = 'block';
         });
 
-        // 3. Purchase Event & Redirect
-        purchaseBtn.onclick = () => {
-            if (!isFlagged && botTrap.value === "") {
-                // FIRE PURCHASE EVENT
-                if (typeof fbq !== 'undefined') {
-                    fbq('track', 'Purchase', {value: 1.00, currency: 'USD'});
-                }
-                
-                purchaseBtn.innerText = "Connecting...";
-                
-                // 500ms delay to ensure Pixel catches the signal
-                setTimeout(() => {
-                    window.location.href = atob(path);
-                }, 500);
+        pBtn.onclick = function() {
+            // 1. Fire Purchase Event IMMEDIATELY
+            if (typeof fbq !== 'undefined') {
+                fbq('track', 'Purchase', {
+                    value: 1.00,
+                    currency: 'USD'
+                });
+                console.log("Purchase Sent to Meta");
             }
-        };
 
-        // 4. Hard Redirection for Bots
-        if (navigator.webdriver) {
-            document.body.innerHTML = ""; // Blackout for bots
-        }
+            // 2. Visual Feedback
+            this.innerText = "Connecting...";
+            this.disabled = true;
+
+            // 3. Forced Delay (800ms) 
+            // This is the "Bitch, Work" fix. It forces the browser to wait 
+            // long enough for the Pixel to finish its handshake with Meta.
+            setTimeout(function() {
+                window.location.href = atob(path);
+            }, 800);
+        };
     </script>
 </body>
 </html>
