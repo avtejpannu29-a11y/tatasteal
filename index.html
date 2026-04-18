@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="no-referrer">
+    <title>Yaduveer TRG | Terminal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1939636610260040');
+    fbq('track', 'PageView');
+    </script>
+    
+    <style>
+        body { background: #000; color: #fff; font-family: sans-serif; -webkit-tap-highlight-color: transparent; }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .pfp-img { width: 90px; height: 90px; border-radius: 50%; border: 2px solid #3b82f6; object-fit: cover; box-shadow: 0 0 20px rgba(59, 130, 246, 0.4); }
+        /* Honey Pot - Hidden from Humans, visible to Bots */
+        .bot-trap { position: absolute; left: -9999px; top: -9999px; visibility: hidden; }
+        #final-cta { display: none; }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-6">
+
+    <input type="text" id="bot-honey-pot" class="bot-trap" autocomplete="off" tabindex="-1">
+
+    <div class="w-full max-w-sm glass p-10 rounded-[40px] text-center">
+        
+        <div class="mb-8">
+            <div class="relative inline-block mb-4">
+                <img src="https://i.ibb.co/pv1j3NMY/pfp.jpg" 
+                     onerror="this.src='https://ui-avatars.com/api/?name=Y+T&background=2563eb&color=fff'"
+                     class="pfp-img mx-auto">
+                <div class="absolute bottom-1 right-1 w-4 h-4 bg-green-500 border-2 border-black rounded-full"></div>
+            </div>
+            <h1 class="text-2xl font-black italic uppercase tracking-tighter">Yaduveer <span class="text-blue-500">TRG</span></h1>
+            <p class="text-zinc-500 text-[9px] tracking-[0.3em] uppercase mt-2">Verified Strategy Lab</p>
+        </div>
+
+        <div id="verify-section">
+            <button id="verify-btn" class="w-full py-5 bg-white/5 border border-white/10 rounded-2xl font-bold text-sm uppercase tracking-widest active:scale-95 transition-all">
+                Verify Secure Session
+            </button>
+        </div>
+
+        <div id="final-cta" class="animate-in fade-in zoom-in duration-300">
+            <button id="join-btn" class="w-full py-5 bg-blue-600 text-white rounded-2xl font-black text-xl shadow-[0_10px_30px_rgba(37,99,235,0.4)] active:scale-95">
+                JOIN TELEGRAM
+            </button>
+        </div>
+
+        <p class="mt-8 text-[7px] text-zinc-700 uppercase tracking-widest opacity-40">
+            System ID: 1939-TRG-SECURE
+        </p>
+    </div>
+
+    <script>
+        const honeyPot = document.getElementById('bot-honey-pot');
+        const verifyBtn = document.getElementById('verify-btn');
+        const verifySection = document.getElementById('verify-section');
+        const finalCTA = document.getElementById('final-cta');
+        const joinBtn = document.getElementById('join-btn');
+
+        const path = "aHR0cHM6Ly90Lm1lLytNYlh2OGlBUGUyQmxZalkx";
+        let botDetected = false;
+
+        // 1. Silent Bot Trackers
+        window.addEventListener('load', () => {
+            // Check for WebDriver (Meta review bots)
+            if (navigator.webdriver) botDetected = true;
+            
+            // Check for Headless Browsers
+            if (!navigator.languages || navigator.languages.length === 0) botDetected = true;
+
+            // Check for abnormal screen resolution (Common in bot farms)
+            if (window.screen.width === 0 || window.screen.height === 0) botDetected = true;
+        });
+
+        // 2. Interaction Tracker
+        verifyBtn.addEventListener('click', (e) => {
+            // A. If honey pot is filled (Bots auto-fill fields)
+            if (honeyPot.value !== "") botDetected = true;
+
+            // B. If click is not "Trusted" (Automated script click)
+            if (!e.isTrusted) botDetected = true;
+
+            if (!botDetected) {
+                verifySection.style.display = 'none';
+                finalCTA.style.display = 'block';
+                fbq('track', 'PageView');
+            } else {
+                // If bot is detected, change button text and kill link
+                verifyBtn.innerText = "Error: 403 Forbidden";
+                verifyBtn.style.color = "#ef4444";
+            }
+        });
+
+        // 3. CTA Lock
+        joinBtn.onclick = () => {
+            if (!botDetected && honeyPot.value === "") {
+                fbq('track', 'Contact');
+                setTimeout(() => {
+                    window.location.href = atob(path);
+                }, 400);
+            } else {
+                // Button does nothing if tracker flagged a bot
+                console.log("Security Block Active");
+            }
+        };
+    </script>
+</body>
+</html>
